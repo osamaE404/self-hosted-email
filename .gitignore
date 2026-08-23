@@ -1,0 +1,16 @@
+# Real per-deployment values — never committed, lives only on the server
+.env
+
+# Secrets and generated key material
+*.key
+*.pem
+*.crt
+docker-data/
+dkim/
+
+# This machine's private notes about the real domain/DNS — local only
+domain-info.md
+
+# OS/editor noise
+.DS_Store
+*.swp
