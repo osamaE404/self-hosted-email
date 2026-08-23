@@ -1,0 +1,46 @@
+services:
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: ${MAIL_HOSTNAME}
+    restart: unless-stopped
+    stop_grace_period: 1m
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - OVERRIDE_HOSTNAME=${MAIL_HOSTNAME}
+      - POSTMASTER_ADDRESS=${ADMIN_EMAIL}
+      # TLS is provided from outside (see docs/caddy-integration.md) rather
+      # than by an ACME client inside this container — keeps a single
+      # certificate authority for the whole box instead of two.
+      - SSL_TYPE=manual
+      - SSL_CERT_PATH=/tmp/ssl/fullchain.pem
+      - SSL_KEY_PATH=/tmp/ssl/privkey.pem
+      # Rspamd handles both spam filtering and DKIM signing/verification,
+      # so a separate OpenDKIM/OpenDMARC/Amavis stack isn't needed.
+      - ENABLE_RSPAMD=1
+      - ENABLE_OPENDKIM=0
+      - ENABLE_OPENDMARC=0
+      - ENABLE_AMAVIS=0
+      - ENABLE_FAIL2BAN=1
+      # Left off deliberately: it needs ~1GB of RAM on its own, which a
+      # small single-mailbox VPS usually can't spare. See README.
+      - ENABLE_CLAMAV=0
+    ports:
+      - "25:25"     # SMTP (inbound receiving + outbound relay)
+      - "587:587"   # Submission (STARTTLS) — client send
+      - "465:465"   # SMTPS (implicit TLS) — client send, alt method
+      - "143:143"   # IMAP (STARTTLS) — client read, alt method
+      - "993:993"   # IMAPS — client read
+    volumes:
+      - ./docker-data/dms/mail-data/:/var/mail/
+      - ./docker-data/dms/mail-state/:/var/mail-state/
+      - ./docker-data/dms/mail-logs/:/var/log/mail/
+      - ./docker-data/dms/config/:/tmp/docker-mailserver/
+      - ${TLS_CERT_PATH}:/tmp/ssl/fullchain.pem:ro
+      - ${TLS_KEY_PATH}:/tmp/ssl/privkey.pem:ro
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+      timeout: 3s
+      retries: 0
