@@ -1,0 +1,12 @@
+# Copy to caddy.d/mail.caddy on the box running the shared Caddy instance,
+# with mail.example.com replaced by your real mail hostname. See
+# docs/caddy-integration.md for why this lives in a separate file rather
+# than being edited into the existing Caddyfile.
+#
+# This block exists only to get a certificate issued for the mail
+# hostname — it doesn't need to proxy anything, since IMAP/SMTP don't
+# speak HTTP.
+
+mail.example.com {
+	respond "" 204
+}
