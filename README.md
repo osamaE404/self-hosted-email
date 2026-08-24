@@ -88,15 +88,23 @@ server's `~/.bash_aliases` (adjusting the `dir` variable if this repo isn't
 cloned at the path it defaults to):
 
 ```sh
-email add newuser@yourdomain.com     # create a mailbox (prompts for password)
+email add newuser@yourdomain.com     # create a mailbox (prompts for password + display name)
 email del newuser@yourdomain.com     # remove one
-email list                           # list mailboxes + usage
+email list                           # list mailboxes + usage + display name
+email display-name newuser@yourdomain.com "Full Name"   # set/change it later (alias: edit)
 email alias-add all@yourdomain.com newuser@yourdomain.com
 email dkim                           # regenerate the DKIM key
 email queue                          # check for stuck outbound mail
 email status / email logs / email restart
 email -h                             # full command list
 ```
+
+`display-name` guarantees the sender name shown to recipients at the
+server level, regardless of what (or whether) any given client sends —
+see [`docs/display-names.md`](docs/display-names.md) for how it works and
+two gotchas worth knowing before touching it (a first-time container
+recreate requirement, and why testing it with `sendmail` on the command
+line looks broken even when it isn't).
 
 ### Sharing the box with other projects
 
