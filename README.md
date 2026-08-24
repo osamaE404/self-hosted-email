@@ -81,6 +81,22 @@ service already runs the box's Caddy, is that Caddy instance itself (for
 the certificate); see `docs/caddy-integration.md` for doing that without
 risking the other service's config or uptime.
 
+## Day-to-day management
+
+`scripts/mail-cli.sh` defines a `mail` shell function — copy it into the
+server's `~/.bash_aliases` (adjusting the `dir` variable if this repo isn't
+cloned at the path it defaults to):
+
+```sh
+mail add newuser@yourdomain.com     # create a mailbox (prompts for password)
+mail del newuser@yourdomain.com     # remove one
+mail list                           # list mailboxes + usage
+mail alias-add all@yourdomain.com newuser@yourdomain.com
+mail dkim                           # regenerate the DKIM key
+mail queue                          # check for stuck outbound mail
+mail status / mail logs / mail restart
+```
+
 ## Verifying it works
 
 See the "Verifying propagation" section of
