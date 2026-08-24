@@ -83,19 +83,30 @@ risking the other service's config or uptime.
 
 ## Day-to-day management
 
-`scripts/mail-cli.sh` defines a `mail` shell function — copy it into the
+`scripts/email-cli.sh` defines an `email` shell function — copy it into the
 server's `~/.bash_aliases` (adjusting the `dir` variable if this repo isn't
 cloned at the path it defaults to):
 
 ```sh
-mail add newuser@yourdomain.com     # create a mailbox (prompts for password)
-mail del newuser@yourdomain.com     # remove one
-mail list                           # list mailboxes + usage
-mail alias-add all@yourdomain.com newuser@yourdomain.com
-mail dkim                           # regenerate the DKIM key
-mail queue                          # check for stuck outbound mail
-mail status / mail logs / mail restart
+email add newuser@yourdomain.com     # create a mailbox (prompts for password)
+email del newuser@yourdomain.com     # remove one
+email list                           # list mailboxes + usage
+email alias-add all@yourdomain.com newuser@yourdomain.com
+email dkim                           # regenerate the DKIM key
+email queue                          # check for stuck outbound mail
+email status / email logs / email restart
+email -h                             # full command list
 ```
+
+### Sharing the box with other projects
+
+If the server runs more than this one project, `scripts/help-launcher.sh`
+adds a single `help` command — an fzf menu across every project on the box.
+The convention: each project drops one plain-text file in `~/help.d/`
+named `<project>.help` listing its own commands; `help` just lists that
+directory and shows whichever one you pick. This repo's copy is
+`examples/email.help.example` — install it as `~/help.d/email.help`. Adding
+another project means only adding *its own* file, never editing this one.
 
 ## Verifying it works
 

@@ -1,0 +1,15 @@
+self-hosted-email — mail server management
+
+  email add <user@domain>          create a mailbox (prompts for password)
+  email del <user@domain>          remove a mailbox and its mail
+  email list                       list mailboxes + disk usage
+  email password <user@domain>     change a mailbox's password
+  email alias-add <alias> <target> forward alias@domain -> target@domain
+  email alias-del <alias> <target> remove that forward
+  email alias-list                 list all aliases
+  email dkim                       (re)generate the DKIM signing key
+  email queue                      show mail stuck in the outbound queue
+  email status                     docker compose ps for the mail stack
+  email logs                       tail the mail server's logs
+  email restart                    restart the mail container
+  email -h                         show this help
