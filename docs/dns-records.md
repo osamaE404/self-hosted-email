@@ -8,7 +8,7 @@ placeholders — substitute your own domain and server IP throughout.
 | A | `mail.example.com` | `203.0.113.10` | 300s while testing |
 | MX | `example.com` | `mail.example.com` (priority 10) | 300s |
 | TXT (SPF) | `example.com` | `v=spf1 mx ~all` | 300s |
-| TXT (DKIM) | `mail._domainkey.example.com` | printed by `./scripts/setup.sh dkim` | 300s |
+| TXT (DKIM) | `mail._domainkey.example.com` | printed by `email dkim` | 300s |
 | TXT (DMARC) | `_dmarc.example.com` | `v=DMARC1; p=quarantine; rua=mailto:postmaster@example.com` | 300s |
 | CAA (recommended) | `example.com` | `0 issue "letsencrypt.org"` | 3600s |
 

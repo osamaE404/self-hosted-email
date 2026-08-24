@@ -47,13 +47,16 @@ cp .env.example .env
 
 docker compose up -d
 
-./scripts/setup.sh dkim
+# one-time: install the management commands (see Day-to-day management below)
+cat scripts/email-cli.sh >> ~/.bash_aliases && source ~/.bash_aliases
+
+email dkim
 # prints the DKIM public key — add it as a DNS TXT record
 # (see docs/dns-records.md for the full record set: MX, SPF, DKIM, DMARC)
 
-./scripts/setup.sh add-account you@yourdomain.com
+email add you@yourdomain.com
 # prompts for a password interactively — never pass it on the command line
-# or store it in this repo
+# or store it in this repo — then optionally a display name
 ```
 
 Then add the DNS records in [`docs/dns-records.md`](docs/dns-records.md),
@@ -125,10 +128,14 @@ checks before pointing real traffic at it.
 ## Repo layout
 
 ```
-docker-compose.yml       the mail stack
-.env.example              template for the real, gitignored .env
-scripts/setup.sh          wrapper for DKIM generation + adding mailboxes
-docs/dns-records.md        every DNS record needed, with placeholders
-docs/caddy-integration.md  sharing an existing Caddy instance's ports/certs
-examples/mail.caddy.example  the Caddy site block to drop in for the cert
+docker-compose.yml            the mail stack
+.env.example                  template for the real, gitignored .env
+scripts/email-cli.sh          the `email` management function (add/del/list/
+                               display-name/aliases/dkim/queue/status/logs)
+scripts/help-launcher.sh      the `help` fzf menu, for boxes with >1 project
+docs/dns-records.md           every DNS record needed, with placeholders
+docs/caddy-integration.md     sharing an existing Caddy instance's ports/certs
+docs/display-names.md         how server-side display-name enforcement works
+examples/mail.caddy.example   the Caddy site block to drop in for the cert
+examples/email.help.example   the `help` menu entry for this project
 ```
