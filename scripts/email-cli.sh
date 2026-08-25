@@ -77,7 +77,14 @@ email() {
             (cd "$dir" && docker compose exec mailserver setup alias list)
             ;;
         dkim)
-            (cd "$dir" && docker compose exec mailserver setup config dkim)
+            # No argument: generates for the server's primary domain only --
+            # it does NOT auto-detect every domain that has a mailbox. Pass
+            # a domain explicitly for any additional one (see docs/multi-domain.md).
+            if [ -n "$2" ]; then
+                (cd "$dir" && docker compose exec mailserver setup config dkim domain "$2")
+            else
+                (cd "$dir" && docker compose exec mailserver setup config dkim)
+            fi
             ;;
         queue)
             (cd "$dir" && docker compose exec mailserver postqueue -p)

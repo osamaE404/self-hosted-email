@@ -96,7 +96,7 @@ email del newuser@yourdomain.com     # remove one
 email list                           # list mailboxes + usage + display name
 email display-name newuser@yourdomain.com "Full Name"   # set/change it later (alias: edit)
 email alias-add all@yourdomain.com newuser@yourdomain.com
-email dkim                           # regenerate the DKIM key
+email dkim [domain]                  # regenerate the DKIM key (no arg = primary domain only)
 email queue                          # check for stuck outbound mail
 email status / email logs / email restart
 email -h                             # full command list
@@ -108,6 +108,12 @@ see [`docs/display-names.md`](docs/display-names.md) for how it works and
 two gotchas worth knowing before touching it (a first-time container
 recreate requirement, and why testing it with `sendmail` on the command
 line looks broken even when it isn't).
+
+This stack can host more than one domain, not just the one in `.env` —
+see [`docs/multi-domain.md`](docs/multi-domain.md) for adding a second
+domain's mailboxes and two gotchas worth knowing (`email dkim` doesn't
+auto-detect every domain, and a DKIM key generation can leave Rspamd
+stuck rather than actually restarted).
 
 ### Sharing the box with other projects
 
@@ -136,6 +142,7 @@ scripts/help-launcher.sh      the `help` fzf menu, for boxes with >1 project
 docs/dns-records.md           every DNS record needed, with placeholders
 docs/caddy-integration.md     sharing an existing Caddy instance's ports/certs
 docs/display-names.md         how server-side display-name enforcement works
+docs/multi-domain.md          hosting mailboxes on more than one domain
 examples/mail.caddy.example   the Caddy site block to drop in for the cert
 examples/email.help.example   the `help` menu entry for this project
 ```

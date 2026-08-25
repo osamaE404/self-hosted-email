@@ -10,7 +10,9 @@ self-hosted-email — mail server management
   email alias-add <alias> <target> forward alias@domain -> target@domain
   email alias-del <alias> <target> remove that forward
   email alias-list                 list all aliases
-  email dkim                       (re)generate the DKIM signing key
+  email dkim [domain]               (re)generate a DKIM key — no argument
+                                    targets the primary domain only, pass
+                                    a domain explicitly for any other one
   email queue                      show mail stuck in the outbound queue
   email status                     docker compose ps for the mail stack
   email logs                       tail the mail server's logs
